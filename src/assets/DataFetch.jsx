@@ -2,13 +2,14 @@ import React, {useState, useEffect} from 'react'
 
 const DataFetch = () => {
 
-    const [products, setProducts] = useState([]);
+const [products, setProducts] = useState([]);
 
-    async function  getProducts(){
+
+ async function  getProducts(){
     try{
-        const response = await fetch('https://fakestoreapi.com/products');
+        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/v1/products/`);
         const data = await response.json();
-        setProducts(data);
+        setProducts(data.products || data);
         console.log(data)
     } catch (error) {
         console.log(error)
