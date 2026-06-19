@@ -1,4 +1,4 @@
-import React from 'react'
+import { Link } from 'react-router-dom'
 
 const Navbar = () => {
   return (
@@ -18,18 +18,20 @@ const Navbar = () => {
     </button>
 
     <div id="mobile-menu" class="hidden absolute top-[60px] left-0 w-full bg-white shadow-md py-4 flex-col items-start gap-2 px-5 text-sm md:hidden">
-        <a href="#" class="block">Home</a>
-        <a href="#" class="block">About</a>
-        <a href="#" class="block">Contact</a>
+        <Link to='/' class="block">Home</Link>
+        <Link to='/about' class="block">About</Link>
+        <Link to='/contact' class="block">Contact</Link>
+        <Link to='/cars' class="block">Cars</Link>
         <button class="cursor-pointer px-6 py-2 mt-2 bg-indigo-500 hover:bg-indigo-600 transition text-white rounded-full text-sm">
             Login
         </button>
     </div>
 
     <div class="hidden sm:flex items-center gap-8">
-        <a href="#">Home</a>
-        <a href="#">About</a>
-        <a href="#">Contact</a>
+        <Link to='/'>Home</Link>
+        <Link to='/about'>About</Link>
+        <Link to='/contact'>Contact</Link>
+        <Link to='/cars'>Cars</Link>
 
         <div class="hidden lg:flex items-center text-sm gap-2 border border-gray-300 px-3 rounded-full">
             <input class="py-1.5 w-full bg-transparent outline-none placeholder-gray-500" type="text" placeholder="Search products" />
@@ -46,9 +48,10 @@ const Navbar = () => {
             <button class="absolute -top-2 -right-3 text-xs text-white bg-indigo-500 w-[18px] h-[18px] rounded-full">3</button>
         </div>
 
+       <Link to='/auth' >
         <button class="cursor-pointer px-8 py-2 bg-indigo-500 hover:bg-indigo-600 transition text-white rounded-full">
             Login
-        </button>
+        </button></Link>
     </div>
 </nav>
 
