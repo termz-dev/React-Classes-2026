@@ -1,9 +1,8 @@
-import React from 'react'
 import { useGetAllCelebs } from './hooks/useGetAllCelebs'
 
 const Celebs = () => {
 
-  const {loading, error, celebs} = useGetAllCelebs();
+  const {loading, error, setSearchQuery, searchQuery, filteredCelebs} = useGetAllCelebs();
 
   if(loading) {
     return(
@@ -23,12 +22,21 @@ const Celebs = () => {
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
       <h1 className='text-3xl sm:text-4xl font-bold text-gray-800 mb-8'>Celebrities</h1>
+      <div className="mb-6">
+        <input
+          type="text"
+          placeholder="Search celebrities..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
 
-      {celebs.length === 0 ? (
+      {filteredCelebs.length === 0 ? (
         <p className="text-gray-500">No celebrities found.</p>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-          {celebs.map((celeb) => (
+          {filteredCelebs.map((celeb) => (
             <div
               key={celeb._id}
               className="bg-white rounded-lg shadow-sm p-6 flex flex-col items-center text-center hover:shadow-lg transition-shadow"

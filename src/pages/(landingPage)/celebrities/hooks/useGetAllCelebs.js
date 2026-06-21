@@ -5,6 +5,10 @@ export const useGetAllCelebs = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [celebs, setCelebs] = useState([]);
+    const [searchQuery, setSearchQuery] = useState('');
+
+    const filteredCelebs = celebs.filter((celeb) =>
+        celeb.name.toLowerCase().includes(searchQuery.toLowerCase()))
 
 
     async function allCelebs() {
@@ -14,6 +18,7 @@ export const useGetAllCelebs = () => {
         try {
             const res = await axiosInstance.get('/celebs');
             setCelebs(res.data.celebs)
+            console.log(res.data.celebs)
         } catch (error) {
 
             setError(error.message || "unable to fetch Celeb");
@@ -30,6 +35,9 @@ export const useGetAllCelebs = () => {
     return {
         loading,
         error,
-        celebs
+        celebs,
+        searchQuery,
+        filteredCelebs,
+        setSearchQuery
     }
 }
