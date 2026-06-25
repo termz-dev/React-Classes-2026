@@ -17,6 +17,7 @@ import Celebrities from "./pages/(landingPage)/celebrities";
 import SearchCar from "./pages/(landingPage)/cars/SearchCar";
 import Signin from "./Pages/(auth)/Signin";
 import Dashboard from "./Pages/dashboard";
+import CreateCeleb from "./Pages/(landingPage)/celebrities/CreateCeleb";
 
 export const router = createBrowserRouter([
        {
@@ -35,7 +36,9 @@ export const router = createBrowserRouter([
             {path: 'cars/:id/edit', Component: EditCar},
             {path: 'form', Component: FormComponnt},
             {path: 'celebs', Component: Celebrities},
-            {path: 'dashboard', Component: Dashboard}
+            {path: 'dashboard', Component: Dashboard},
+            {path: 'create-celeb', Component: CreateCeleb}
+
         ]
 
        },

@@ -1,4 +1,4 @@
-import {useState, useEffect} from 'react';
+import {useState, useEffect, useCallback} from 'react';
 import axiosInstance from '../../../../api/axiosInstance';
 
 export const useGetAllCelebs = () => {
@@ -7,37 +7,30 @@ export const useGetAllCelebs = () => {
     const [celebs, setCelebs] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
 
-    const filteredCelebs = celebs.filter((celeb) =>
-        celeb.name.toLowerCase().includes(searchQuery.toLowerCase()))
+    
 
 
-    async function allCelebs() {
-
-        setLoading(true)
-
-        try {
-            const res = await axiosInstance.get('/celebs');
-            setCelebs(res.data.celebs)
-            console.log(res.data.celebs)
-        } catch (error) {
-
-            setError(error.message || "unable to fetch Celeb");
-            
-        } finally {
-            setLoading(false)
-        }
+   const allCelebs = useCallback(async () => {
+    setLoading(true)
+    try {
+        const res = await axiosInstance.get(`/celebs?search=${encodeURIComponent(searchQuery)}`);
+        setCelebs(res.data.celebs)
+    } catch (error) {
+        setError(error.message || "unable to fetch Celeb");
+    } finally {
+        setLoading(false)
     }
+}, [searchQuery])
 
-    useEffect(() => {
-        allCelebs()
-    }, [])
+useEffect(() => {
+    allCelebs()
+}, [allCelebs])
 
     return {
         loading,
         error,
         celebs,
         searchQuery,
-        filteredCelebs,
         setSearchQuery
     }
 }
