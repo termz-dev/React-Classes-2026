@@ -31,6 +31,7 @@ useEffect(() => {
         error,
         celebs,
         searchQuery,
-        setSearchQuery
+        setSearchQuery,
+        allCelebs
     }
 }

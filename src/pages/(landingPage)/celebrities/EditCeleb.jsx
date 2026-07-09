@@ -1,50 +1,76 @@
-import React from 'react'
-import { useState } from 'react'
-import {useCreateCeleb} from "./hooks/useCreateCeleb"
-import { useNavigate } from 'react-router-dom'
+import React, { useState } from 'react'
+import { useGetSingleCeleb } from './hooks/useGetSingleCeleb';
+import { useUpdateCeleb } from './hooks/useUpdateCeleb';
+import { useParams } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-const CreateCeleb = () => {
-    const {loading, error, success, createCeleb} = useCreateCeleb();
+
+const EditCeleb = () => {
+    const {loading, error, singleCeleb} = useGetSingleCeleb();
+    const {updateCeleb} = useUpdateCeleb();
+    console.log(singleCeleb)
     const navigate = useNavigate();
-
 
     const [name, setName] = useState('');
     const [profession, setProfession] = useState('');
     const [image, setImage] = useState('');
     const [bio, setBio] = useState('');
+    const { id } = useParams();
 
-   const handleSubmit = async (e) => {
-    e.preventDefault();
+     useEffect(() => {
+  if (singleCeleb) {
+    setName(singleCeleb.name);
+    setProfession(singleCeleb.profession);
+    setImage(singleCeleb.image);
+    setBio(singleCeleb.bio || '');
+  }
+}, [singleCeleb]);
 
-    const celebData = {
+    
+if (loading) {
+    return <div><p>Loading...</p></div>
+}
+
+if (error) {
+    return <div><p>{error}</p></div>
+}
+
+if (!singleCeleb) {
+    return <div><p>Celeb not found</p></div>
+}
+
+
+
+const handleSubmit = async (e) => {
+      e.preventDefault();
+
+      const celebData = {
         name,
         profession,
         image,
         bio
+      }
+     const updated = await updateCeleb(celebData, id)
+
+      if (updated) {
+            navigate(`/celebs/${id}`);
     }
 
-    const createdCeleb = await createCeleb(celebData);
+  }
+    
 
-    if(createdCeleb) {
-        setName('');
-        setProfession('');
-        setImage('');
-        setBio('');
-        navigate('/celebs')
-    }
-
-   };
+   
 
   return (
     <div className="min-h-screen bg-slate-50 flex items-center justify-center px-4 py-10">
-      <form
+      <form onSubmit={handleSubmit}
         className="w-full max-w-2xl bg-white rounded-3xl border border-slate-200 shadow-[0_30px_90px_-40px_rgba(15,23,42,0.3)] p-8 sm:p-10"
-        onSubmit={handleSubmit}
+        
       >
         <div className="mb-8 text-center">
             {error && <p className="text-sm font-semibold text-red-600 mb-2">{error}</p>}
-            {success && <p className="text-sm font-semibold text-emerald-600 mb-2">Celebrity Created Successfully</p>}
-            <h1 className="text-3xl font-bold text-slate-900">Create Celebrity</h1>
+            <h1 className="text-3xl font-bold text-slate-900">Edit Celebrity</h1>
             <p className="mt-2 text-sm text-slate-500">Add a new celebrity profile with name, profession, image link, and bio.</p>
         </div>
 
@@ -97,12 +123,11 @@ const CreateCeleb = () => {
             disabled={loading}
             className="mt-2 inline-flex w-full items-center justify-center rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-500/20 transition hover:-translate-y-0.5 hover:shadow-xl disabled:cursor-not-allowed disabled:bg-slate-400"
           >
-            {loading ? "Creating Celebrity..." : "Create Celebrity"}
+            {loading ? "Updating Celebrity..." : "Update Celebrity"}
           </button>
         </div>
       </form>
     </div>
   )
 }
-
-export default CreateCeleb
+export default EditCeleb
